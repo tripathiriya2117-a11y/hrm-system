@@ -1,0 +1,23 @@
+<html>
+<body>
+
+<h2>Edit Department</h2>
+
+<form action="/update/{{ dept[0] }}" method="POST">
+
+<label>Department Name</label>
+<br>
+<input type="text" name="dept_name" value="{{ dept[1] }}">
+<br><br>
+
+<label>Description</label>
+<br>
+<input type="text" name="description" value="{{ dept[2] }}">
+<br><br>
+
+<button type="submit">Update</button>
+
+</form>
+
+</body>
+</html>
