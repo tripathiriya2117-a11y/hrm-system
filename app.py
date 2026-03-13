@@ -1,81 +1,102 @@
 from flask import Flask, render_template, request, redirect
-import mysql.connector
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="root1234",   # your mysql password
-    database="hrm_db"
-)
+# SQLite database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hrm.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-cursor = db.cursor()
+db = SQLAlchemy(app)
 
+
+# Department Table
+class Department(db.Model):
+
+    dept_id = db.Column(db.Integer, primary_key=True)
+    dept_name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(300))
+    status = db.Column(db.String(50), default='active')
+
+
+# Dashboard
 @app.route('/')
 def index():
 
     search = request.args.get('search')
 
     if search:
-        query = "SELECT * FROM department WHERE dept_name LIKE %s AND status='active'"
-        cursor.execute(query,('%'+search+'%',))
+        departments = Department.query.filter(
+            Department.dept_name.like(f"%{search}%"),
+            Department.status == "active"
+        ).all()
     else:
-        query = "SELECT * FROM department WHERE status='active'"
-        cursor.execute(query)
+        departments = Department.query.filter_by(status="active").all()
 
-    departments = cursor.fetchall()
+    return render_template("index.html", departments=departments, count=len(departments))
 
-    return render_template("index.html", departments=departments)
-    cursor.execute("SELECT * FROM department WHERE status='active'")
-    departments = cursor.fetchall()
-    return render_template("index.html", departments=departments)
-
-
-@app.route('/add_department', methods=['POST'])
-def add_department():
-    dept_name = request.form['dept_name']
-    description = request.form['description']
-
-    query = "INSERT INTO department (dept_name, description) VALUES (%s,%s)"
-    cursor.execute(query,(dept_name,description))
-    db.commit()
-
-    return redirect('/')
-
-@app.route('/delete/<int:id>')
-def delete_department(id):
-    query = "UPDATE department SET status='inactive' WHERE dept_id=%s"
-    cursor.execute(query,(id,))
-    db.commit()
-
-    return redirect('/')
-
-@app.route('/edit/<int:id>')
-def edit_department(id):
-
-    query = "SELECT * FROM department WHERE dept_id=%s"
-    cursor.execute(query,(id,))
-    department = cursor.fetchone()
-
-    return render_template("edit_department.html", dept=department)
-
-@app.route('/update/<int:id>', methods=['POST'])
-def update_department(id):
-
-    dept_name = request.form['dept_name']
-    description = request.form['description']
-
-    query = "UPDATE department SET dept_name=%s, description=%s WHERE dept_id=%s"
-
-    cursor.execute(query,(dept_name,description,id))
-    db.commit()
-
-    return redirect('/')
-
+# Add Department Page
 @app.route('/add')
 def add_page():
     return render_template("add_department.html")
+
+
+# Insert Department
+@app.route('/add_department', methods=['POST'])
+def add_department():
+
+    dept_name = request.form['dept_name']
+    description = request.form['description']
+
+    new_dept = Department(
+        dept_name=dept_name,
+        description=description
+    )
+
+    db.session.add(new_dept)
+    db.session.commit()
+
+    return redirect('/')
+
+
+# Delete Department (soft delete)
+@app.route('/delete/<int:id>')
+def delete_department(id):
+
+    dept = Department.query.get(id)
+    dept.status = "inactive"
+
+    db.session.commit()
+
+    return redirect('/')
+
+
+# Edit Department
+@app.route('/edit/<int:id>')
+def edit_department(id):
+
+    dept = Department.query.get(id)
+
+    return render_template("edit_department.html", dept=dept)
+
+
+# Update Department
+@app.route('/update/<int:id>', methods=['POST'])
+def update_department(id):
+
+    dept = Department.query.get(id)
+
+    dept.dept_name = request.form['dept_name']
+    dept.description = request.form['description']
+
+    db.session.commit()
+
+    return redirect('/')
+
+
+# Create database automatically
+with app.app_context():
+    db.create_all()
 
 
 if __name__ == "__main__":
