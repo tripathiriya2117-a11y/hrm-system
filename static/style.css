@@ -1,0 +1,44 @@
+/* General */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+    background: #343a40;
+    color: white;
+    height: 100vh;
+    padding: 20px;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+/* Cards */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Tables */
+.table {
+    background: white;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 5px;
+}
+
+/* Page spacing */
+h2 {
+    margin-bottom: 20px;
+}
