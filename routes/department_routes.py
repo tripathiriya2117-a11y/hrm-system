@@ -7,17 +7,9 @@ department_bp = Blueprint('department', __name__)
 @department_bp.route('/')
 def index():
 
-    search = request.args.get('search')
+    departments = Department.query.filter_by(status="active").all()
 
-    if search:
-        departments = Department.query.filter(
-            Department.dept_name.like(f"%{search}%"),
-            Department.status == "active"
-        ).all()
-    else:
-        departments = Department.query.filter_by(status="active").all()
-
-    return render_template("index.html", departments=departments, count=len(departments))
+    return render_template("index.html", departments=departments)
 
 
 @department_bp.route('/add')
@@ -37,6 +29,38 @@ def add_department():
     )
 
     db.session.add(new_dept)
+    db.session.commit()
+
+    return redirect('/')
+
+
+@department_bp.route('/delete/<int:id>')
+def delete_department(id):
+
+    dept = Department.query.get(id)
+    dept.status = "inactive"
+
+    db.session.commit()
+
+    return redirect('/')
+
+
+@department_bp.route('/edit/<int:id>')
+def edit_department(id):
+
+    dept = Department.query.get(id)
+
+    return render_template("edit_department.html", dept=dept)
+
+
+@department_bp.route('/update/<int:id>', methods=['POST'])
+def update_department(id):
+
+    dept = Department.query.get(id)
+
+    dept.dept_name = request.form['dept_name']
+    dept.description = request.form['description']
+
     db.session.commit()
 
     return redirect('/')
