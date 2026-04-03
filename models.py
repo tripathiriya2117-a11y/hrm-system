@@ -3,17 +3,15 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-
 class Department(db.Model):
     dept_id = db.Column(db.Integer, primary_key=True)
-    dept_name = db.Column(db.String(100), nullable=False)
+    dept_name = db.Column(db.String(100))
     description = db.Column(db.String(300))
     status = db.Column(db.String(50), default='active')
 
-
 class Employee(db.Model):
     emp_id = db.Column(db.Integer, primary_key=True)
-    emp_name = db.Column(db.String(100), nullable=False)
+    emp_name = db.Column(db.String(100))
     email = db.Column(db.String(120))
     phone = db.Column(db.String(20))
 
@@ -21,7 +19,6 @@ class Employee(db.Model):
     department = db.relationship('Department')
 
     status = db.Column(db.String(50), default='active')
-
 
 class Attendance(db.Model):
     att_id = db.Column(db.Integer, primary_key=True)
