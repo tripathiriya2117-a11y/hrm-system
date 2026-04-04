@@ -1,56 +1,83 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
 
-<title>Add Employee</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-</head>
-
-<body class="bg-light">
-
-<div class="container mt-5">
+{% block content %}
 
 <h2>Add Employee</h2>
 
 <form action="/save_employee" method="POST">
 
 <div class="mb-3">
-<label>Name</label>
-<input type="text" name="emp_name" class="form-control" required>
+<label>First Name</label>
+<input type="text" name="first_name" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Last Name</label>
+<input type="text" name="last_name" class="form-control" required>
 </div>
 
 <div class="mb-3">
 <label>Email</label>
-<input type="email" name="email" class="form-control">
+<input type="email" name="email" class="form-control" required>
 </div>
 
 <div class="mb-3">
-<label>Phone</label>
-<input type="text" name="phone" class="form-control">
+<label>Mobile</label>
+<input type="text" name="mobile" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Role</label>
+<select name="role_id" class="form-control" required>
+<option value="">Select Role</option>
+{% for r in roles %}
+<option value="{{ r.role_id }}">{{ r.role_name }}</option>
+{% endfor %}
+</select>
 </div>
 
 <div class="mb-3">
 <label>Department</label>
-<select name="department_id" class="form-control">
-
-{% for dept in departments %}
-
-<option value="{{ dept.dept_id }}">
-{{ dept.dept_name }}
-</option>
-
+<select name="dept_id" class="form-control" required>
+<option value="">Select Department</option>
+{% for d in departments %}
+<option value="{{ d.dept_id }}">{{ d.dept_name }}</option>
 {% endfor %}
-
 </select>
 </div>
 
-<button class="btn btn-primary">Create Employee</button>
+<div class="mb-3">
+<label>Reporting Manager</label>
+<select name="reporting_manager_id" class="form-control">
+<option value="">Select Manager (optional)</option>
+{% for m in managers %}
+<option value="{{ m.emp_id }}">
+{{ m.first_name }} {{ m.last_name }}
+</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="mb-3">
+<label>Date of Joining</label>
+<input type="date" name="date_of_joining" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Username</label>
+<input type="text" name="username" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Password</label>
+<input type="password" name="password" class="form-control" required>
+</div>
+
+<!-- IMPORTANT BUTTON -->
+<button type="submit" class="btn btn-primary">
+Add Employee
+</button>
 
 </form>
 
-</div>
-
-</body>
-</html>
+{% endblock %}

@@ -10,16 +10,30 @@ class Department(db.Model):
     status = db.Column(db.String(50), default='active')
 
 class Employee(db.Model):
-    emp_id = db.Column(db.Integer, primary_key=True)
-    emp_name = db.Column(db.String(100))
-    email = db.Column(db.String(120))
-    phone = db.Column(db.String(20))
 
-    department_id = db.Column(db.Integer, db.ForeignKey('department.dept_id'))
-    department = db.relationship('Department')
+    emp_id = db.Column(db.Integer, primary_key=True)
+
+    first_name = db.Column(db.String(100))
+    last_name = db.Column(db.String(100))
+
+    username = db.Column(db.String(100))
+    password = db.Column(db.String(100))
+
+    email = db.Column(db.String(120))
+    mobile = db.Column(db.String(20))
+
+    dept_id = db.Column(db.Integer, db.ForeignKey('department.dept_id'))
+    role_id = db.Column(db.Integer, db.ForeignKey('role.role_id'))
+
+    reporting_manager_id = db.Column(db.Integer, db.ForeignKey('employee.emp_id'))
+
+    date_of_joining = db.Column(db.Date)
+
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
 
     status = db.Column(db.String(50), default='active')
-
+    
 class Attendance(db.Model):
     att_id = db.Column(db.Integer, primary_key=True)
 

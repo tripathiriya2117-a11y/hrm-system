@@ -6,14 +6,9 @@
 
 <a href="/add_employee" class="btn btn-primary mb-3">Add Employee</a>
 
-<form method="GET" action="/employees" class="mb-3">
-<input type="text" name="search" class="form-control" placeholder="Search employee by name">
-</form>
-
 <table class="table table-bordered">
 
 <thead class="table-dark">
-
 <tr>
 <th>ID</th>
 <th>Name</th>
@@ -22,7 +17,6 @@
 <th>Department</th>
 <th>Action</th>
 </tr>
-
 </thead>
 
 <tbody>
@@ -33,32 +27,26 @@
 
 <td>{{ emp.emp_id }}</td>
 
-<td>
-<a href="/employee/{{ emp.emp_id }}">
-{{ emp.emp_name }}
-</a>
-</td>
+<td>{{ emp.first_name }} {{ emp.last_name }}</td>
 
 <td>{{ emp.email }}</td>
 
-<td>{{ emp.phone }}</td>
+<td>{{ emp.mobile }}</td>
 
-<td>{{ emp.department.dept_name }}</td>
+<td>{{ emp.dept_id }}</td>
+
+<td>{{ emp.role_id }}</td>
 
 <td>
 
 <a href="/edit_employee/{{ emp.emp_id }}" class="btn btn-warning btn-sm">Edit</a>
 
-<a href="/delete_employee/{{ emp.emp_id }}"
-class="btn btn-danger btn-sm"
+<a href="/delete_employee/{{ emp.emp_id }}" class="btn btn-danger btn-sm"
 onclick="return confirm('Delete this employee?')">
-Delete
-</a>
 
-{% if emp.status == 'active' %}
-<a href="/checkin/{{ emp.emp_id }}" class="btn btn-success btn-sm">Check In</a>
-<a href="/checkout/{{ emp.emp_id }}" class="btn btn-info btn-sm">Check Out</a>
-{% endif %}
+Delete
+
+</a>
 
 </td>
 
@@ -67,7 +55,6 @@ Delete
 {% endfor %}
 
 </tbody>
-
 </table>
 
 {% endblock %}
