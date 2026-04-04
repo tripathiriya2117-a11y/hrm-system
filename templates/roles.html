@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Roles Dashboard</h2>
+
+<a href="/add_role" class="btn btn-primary mb-3">Create Role</a>
+
+<table class="table table-bordered">
+
+<thead class="table-dark">
+<tr>
+<th>ID</th>
+<th>Role Name</th>
+<th>Description</th>
+<th>Action</th>
+<th>Created</th>
+<th>Updated</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for role in roles %}
+
+<tr>
+
+<td>{{ role.role_id }}</td>
+<td>{{ role.role_name }}</td>
+<td>{{ role.description }}</td>
+<td>{{ role.created_at }}</td>
+<td>{{ role.updated_at }}</td>
+<td>
+
+<a href="/edit_role/{{ role.role_id }}" class="btn btn-warning btn-sm">Edit</a>
+
+<a href="/delete_role/{{ role.role_id }}" class="btn btn-danger btn-sm">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

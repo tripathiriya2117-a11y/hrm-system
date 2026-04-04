@@ -30,3 +30,11 @@ class Attendance(db.Model):
     check_out = db.Column(db.DateTime)
 
     date = db.Column(db.Date, default=datetime.utcnow)
+
+class Role(db.Model):
+    role_id = db.Column(db.Integer, primary_key=True)
+    role_name = db.Column(db.String(100))
+    description = db.Column(db.String(200))
+    status = db.Column(db.String(50), default='active')
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)    

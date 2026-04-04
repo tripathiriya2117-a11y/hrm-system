@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Role Update</h2>
+
+<form action="/update_role/{{ role.role_id }}" method="POST">
+
+<div class="mb-3">
+<label>Role Name</label>
+<input type="text" name="role_name" class="form-control" value="{{ role.role_name }}">
+</div>
+
+<div class="mb-3">
+<label>Description</label>
+<textarea name="description" class="form-control">{{ role.description }}</textarea>
+</div>
+
+<button class="btn btn-primary">Update Role</button>
+
+</form>
+
+{% endblock %}
