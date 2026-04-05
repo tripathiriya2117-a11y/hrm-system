@@ -19,6 +19,7 @@
 </tr>
 </thead>
 
+
 <tbody>
 
 {% for emp in employees %}
@@ -35,16 +36,19 @@
 
 <td>{{ emp.dept_id }}</td>
 
-<td>{{ emp.role_id }}</td>
-
 <td>
-
 <a href="/edit_employee/{{ emp.emp_id }}" class="btn btn-warning btn-sm">Edit</a>
 
-<a href="/delete_employee/{{ emp.emp_id }}" class="btn btn-danger btn-sm"
+<a href="/delete_employee/{{ emp.emp_id }}" 
+class="btn btn-danger btn-sm"
 onclick="return confirm('Delete this employee?')">
 
 Delete
+
+</a>
+</td>
+
+</tr>
 
 </a>
 

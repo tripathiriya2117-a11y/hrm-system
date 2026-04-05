@@ -4,47 +4,57 @@ from models import db, Department
 department_bp = Blueprint('department', __name__)
 
 
-@department_bp.route('/')
+# =========================
+# Dashboard (MAIN PAGE)
+# =========================
+@department_bp.route('/dashboard')
 def index():
-
-    departments = Department.query.filter_by(status="active").all()
-
+    departments = Department.query.filter_by(status='active').all()
     return render_template("index.html", departments=departments)
 
 
+# =========================
+# Add Department Page
+# =========================
 @department_bp.route('/add')
 def add_page():
     return render_template("add_department.html")
 
 
+# =========================
+# Save Department
+# =========================
 @department_bp.route('/add_department', methods=['POST'])
 def add_department():
 
-    dept_name = request.form['dept_name']
-    description = request.form['description']
-
-    new_dept = Department(
-        dept_name=dept_name,
-        description=description
+    dept = Department(
+        dept_name=request.form['dept_name'],
+        description=request.form['description']
     )
 
-    db.session.add(new_dept)
+    db.session.add(dept)
     db.session.commit()
 
-    return redirect('/')
+    return redirect('/dashboard')   
 
 
+# =========================
+# Delete Department (Soft)
+# =========================
 @department_bp.route('/delete/<int:id>')
 def delete_department(id):
 
     dept = Department.query.get(id)
-    dept.status = "inactive"
+    dept.status = 'inactive'
 
     db.session.commit()
 
-    return redirect('/')
+    return redirect('/dashboard')  
 
 
+# =========================
+# Edit Department Page
+# =========================
 @department_bp.route('/edit/<int:id>')
 def edit_department(id):
 
@@ -53,6 +63,9 @@ def edit_department(id):
     return render_template("edit_department.html", dept=dept)
 
 
+# =========================
+# Update Department
+# =========================
 @department_bp.route('/update/<int:id>', methods=['POST'])
 def update_department(id):
 
@@ -63,4 +76,4 @@ def update_department(id):
 
     db.session.commit()
 
-    return redirect('/')
+    return redirect('/dashboard')   
