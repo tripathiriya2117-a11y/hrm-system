@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, session
 from models import db, Department
 
 department_bp = Blueprint('department', __name__)
@@ -9,6 +9,10 @@ department_bp = Blueprint('department', __name__)
 # =========================
 @department_bp.route('/dashboard')
 def index():
+
+    if 'user_id' not in session:
+        return redirect('/login')   # 🔥 REQUIRED
+
     departments = Department.query.filter_by(status='active').all()
     return render_template("index.html", departments=departments)
 
@@ -18,6 +22,10 @@ def index():
 # =========================
 @department_bp.route('/add')
 def add_page():
+
+    if 'user_id' not in session:
+        return redirect('/login')
+
     return render_template("add_department.html")
 
 
@@ -27,6 +35,9 @@ def add_page():
 @department_bp.route('/add_department', methods=['POST'])
 def add_department():
 
+    if 'user_id' not in session:
+        return redirect('/login')
+
     dept = Department(
         dept_name=request.form['dept_name'],
         description=request.form['description']
@@ -35,7 +46,7 @@ def add_department():
     db.session.add(dept)
     db.session.commit()
 
-    return redirect('/dashboard')   
+    return redirect('/dashboard')
 
 
 # =========================
@@ -44,12 +55,16 @@ def add_department():
 @department_bp.route('/delete/<int:id>')
 def delete_department(id):
 
+    if 'user_id' not in session:
+        return redirect('/login')
+
     dept = Department.query.get(id)
-    dept.status = 'inactive'
 
-    db.session.commit()
+    if dept:
+        dept.status = 'inactive'
+        db.session.commit()
 
-    return redirect('/dashboard')  
+    return redirect('/dashboard')
 
 
 # =========================
@@ -57,6 +72,9 @@ def delete_department(id):
 # =========================
 @department_bp.route('/edit/<int:id>')
 def edit_department(id):
+
+    if 'user_id' not in session:
+        return redirect('/login')
 
     dept = Department.query.get(id)
 
@@ -69,11 +87,14 @@ def edit_department(id):
 @department_bp.route('/update/<int:id>', methods=['POST'])
 def update_department(id):
 
+    if 'user_id' not in session:
+        return redirect('/login')
+
     dept = Department.query.get(id)
 
-    dept.dept_name = request.form['dept_name']
-    dept.description = request.form['description']
+    if dept:
+        dept.dept_name = request.form['dept_name']
+        dept.description = request.form['description']
+        db.session.commit()
 
-    db.session.commit()
-
-    return redirect('/dashboard')   
+    return redirect('/dashboard')

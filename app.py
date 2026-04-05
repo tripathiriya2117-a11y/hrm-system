@@ -28,14 +28,19 @@ app.register_blueprint(auth_bp)
 with app.app_context():
     db.create_all()
 
-from flask import redirect
+from flask import session, redirect
 
 @app.route('/')
 def home():
-    return redirect('/login')
+    if 'user_id' in session:
+        return redirect('/dashboard')
+    else:
+        return redirect('/login')
 
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
         port=5000  
     )
+
+    
