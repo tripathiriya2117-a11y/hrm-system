@@ -52,3 +52,33 @@ class Role(db.Model):
     status = db.Column(db.String(50), default='active')
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)    
+
+
+class Task(db.Model):
+    task_id = db.Column(db.Integer, primary_key=True)
+
+    title = db.Column(db.String(100))
+    description = db.Column(db.String(300))
+    priority = db.Column(db.String(20))
+
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)
+
+    task_type = db.Column(db.String(50))
+
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+
+class TaskAssignment(db.Model):
+    assignment_id = db.Column(db.Integer, primary_key=True)
+
+    task_id = db.Column(db.Integer, db.ForeignKey('task.task_id'))
+
+    employee_id = db.Column(db.Integer, db.ForeignKey('employee.emp_id'))
+    assigned_by = db.Column(db.Integer)
+
+    assigned_date = db.Column(db.DateTime, default=datetime.now)
+
+    status = db.Column(db.String(20), default='Pending')
+    completed_at = db.Column(db.DateTime)
+

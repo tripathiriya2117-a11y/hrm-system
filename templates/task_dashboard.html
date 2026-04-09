@@ -1,0 +1,28 @@
+<h2>Task Dashboard</h2>
+
+
+<a href="/task/add" class="btn btn-primary">Create Task</a>
+<table border="1">
+<tr>
+<th>Task</th>
+<th>Employee</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+{% for assignment, task, emp in data %}
+<tr>
+<td>{{ task.title }}</td>
+<td>{{ emp.first_name }}</td>
+<td>{{ assignment.status }}</td>
+
+<td>
+<a href="/task/complete/{{ assignment.assignment_id }}">Mark Complete</a>
+</td>
+
+</tr>
+{% endfor %}
+</table>
+
+</table>
+

@@ -1,0 +1,39 @@
+<h2>Create Task</h2>
+
+<form action="/task/save" method="POST">
+
+<label>Title:</label>
+<input type="text" name="title"><br>
+
+<label>Description:</label>
+<textarea name="description"></textarea><br>
+
+<label>Priority:</label>
+<select name="priority">
+<option>High</option>
+<option>Medium</option>
+<option>Low</option>
+</select><br>
+
+<label>Assign To:</label>
+<select name="employee_id">
+{% for emp in employees %}
+<option value="{{ emp.emp_id }}">{{ emp.first_name }}</option>
+{% endfor %}
+</select><br>
+
+<label>Start Date:</label>
+<input type="date" name="start_date"><br>
+
+<label>End Date:</label>
+<input type="date" name="end_date"><br>
+
+<label>Task Type:</label>
+<select name="task_type">
+<option>Individual</option>
+<option>Team</option>
+</select><br>
+
+<button type="submit">Create Task</button>
+
+</form>

@@ -15,43 +15,37 @@
 <th>Email</th>
 <th>Phone</th>
 <th>Department</th>
-<th>Action</th>
+<th>Actions</th>
 </tr>
 </thead>
-
 
 <tbody>
 
 {% for emp in employees %}
 
 <tr>
-
 <td>{{ emp.emp_id }}</td>
-
 <td>{{ emp.first_name }} {{ emp.last_name }}</td>
-
 <td>{{ emp.email }}</td>
-
 <td>{{ emp.mobile }}</td>
-
 <td>{{ emp.dept_id }}</td>
 
 <td>
+<a href="/employee/{{ emp.emp_id }}" class="btn btn-info btn-sm">View</a>
+
 <a href="/edit_employee/{{ emp.emp_id }}" class="btn btn-warning btn-sm">Edit</a>
 
 <a href="/delete_employee/{{ emp.emp_id }}" 
 class="btn btn-danger btn-sm"
 onclick="return confirm('Delete this employee?')">
-
 Delete
-
-</a>
-</td>
-
-</tr>
-
 </a>
 
+<br><br>
+
+<a href="/checkin/{{ emp.emp_id }}" class="btn btn-success btn-sm">Check In</a>
+
+<a href="/checkout/{{ emp.emp_id }}" class="btn btn-secondary btn-sm">Check Out</a>
 </td>
 
 </tr>
@@ -59,6 +53,7 @@ Delete
 {% endfor %}
 
 </tbody>
+
 </table>
 
 {% endblock %}

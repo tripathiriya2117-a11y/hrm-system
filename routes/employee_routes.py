@@ -1,19 +1,17 @@
-from flask import Blueprint, render_template, request, redirect
-from models import db, Employee, Department, Role
+from flask import Blueprint, render_template, request, redirect, session
+from models import db, Employee
 from datetime import datetime
-
+# ✅ MUST COME FIRST
 employee_bp = Blueprint('employee', __name__)
 
 
 # =========================
-# Employee Dashboard
+# EMPLOYEE LIST
 # =========================
 @employee_bp.route('/employees')
 def employees():
-    employees = Employee.query.filter_by(status='active').all()
+    employees = Employee.query.all()
     return render_template("employees.html", employees=employees)
-
-
 # =========================
 # Add Employee Page
 # =========================
@@ -113,3 +111,13 @@ def update_employee(id):
     db.session.commit()
 
     return redirect('/employees')
+
+@employee_bp.route('/employee/<int:id>')
+def employee_profile(id):
+
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    emp = Employee.query.get(id)
+
+    return render_template('employee_profile.html', emp=emp)

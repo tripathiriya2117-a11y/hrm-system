@@ -7,7 +7,6 @@
 <table class="table table-bordered">
 
 <thead class="table-dark">
-
 <tr>
 <th>ID</th>
 <th>Employee</th>
@@ -15,28 +14,31 @@
 <th>Check In</th>
 <th>Check Out</th>
 </tr>
-
 </thead>
 
 <tbody>
 
+{% if attendance %}
+
 {% for att in attendance %}
 
 <tr>
-
 <td>{{ att.att_id }}</td>
-
 <td>{{ att.employee.emp_name }}</td>
-
 <td>{{ att.date }}</td>
-
 <td>{{ att.check_in }}</td>
-
 <td>{{ att.check_out }}</td>
-
 </tr>
 
 {% endfor %}
+
+{% else %}
+
+<tr>
+<td colspan="5" class="text-center">No records found</td>
+</tr>
+
+{% endif %}
 
 </tbody>
 
