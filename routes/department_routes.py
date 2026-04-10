@@ -9,13 +9,11 @@ department_bp = Blueprint('department', __name__)
 # =========================
 @department_bp.route('/dashboard')
 def index():
+     if 'user_id' not in session:
+         return redirect('/login')
 
-    if 'user_id' not in session:
-        return redirect('/login')   # 🔥 REQUIRED
-
-    departments = Department.query.filter_by(status='active').all()
-    return render_template("index.html", departments=departments)
-
+     departments = Department.query.filter_by(status='active').all()
+     return render_template("index.html", departments=departments)
 
 # =========================
 # Add Department Page
@@ -36,7 +34,7 @@ def add_page():
 def add_department():
 
     if 'user_id' not in session:
-        return redirect('/login')
+       return redirect('/login')
 
     dept = Department(
         dept_name=request.form['dept_name'],

@@ -38,30 +38,36 @@ def add_employee_page():
 @employee_bp.route('/save_employee', methods=['POST'])
 def save_employee():
 
-    reporting_manager_id = request.form.get('reporting_manager_id')
-    reporting_manager_id = int(reporting_manager_id) if reporting_manager_id else None
+    from datetime import datetime
 
-    emp = Employee(
-        first_name=request.form['first_name'],
-        last_name=request.form['last_name'],
-        username=request.form['username'],
-        password=request.form['password'],
-        email=request.form['email'],
-        mobile=request.form['mobile'],
-        dept_id=int(request.form['dept_id']),
-        role_id=int(request.form['role_id']),
-        reporting_manager_id=reporting_manager_id,
-        date_of_joining=datetime.strptime(
-            request.form['date_of_joining'],
-            "%Y-%m-%d"
-        ).date(),
-        created_at=datetime.utcnow()
-    )
+    try:
+        reporting_manager_id = request.form.get('reporting_manager_id')
+        reporting_manager_id = int(reporting_manager_id) if reporting_manager_id else None
 
-    db.session.add(emp)
-    db.session.commit()
+        emp = Employee(
+            first_name=request.form['first_name'],
+            last_name=request.form['last_name'],
+            username=request.form['username'],
+            password=request.form['password'],
+            email=request.form['email'],
+            mobile=request.form['mobile'],
+            dept_id=int(request.form['dept_id']),
+            role_id=int(request.form['role_id']),
+            reporting_manager_id=reporting_manager_id,
+            date_of_joining=datetime.strptime(
+                request.form['date_of_joining'],
+                "%Y-%m-%d"
+            ).date(),
+            created_at=datetime.utcnow()
+        )
 
-    return redirect('/employees')
+        db.session.add(emp)
+        db.session.commit()
+
+        return redirect('/employees')
+
+    except Exception as e:
+        return str(e)
 
 
 # =========================

@@ -10,7 +10,7 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/login')
 def login_page():
     return render_template("login.html")
-
+   
 
 # =========================
 # Login Logic
@@ -18,17 +18,21 @@ def login_page():
 @auth_bp.route('/login_user', methods=['POST'])
 def login_user():
 
-    email = request.form['username']   # form field stays "username"
-    password = request.form['password']
+    print("FORM:", request.form)
+    print("DB:", [(u.email, u.password) for u in Employee.query.all()])
 
-    user = Employee.query.filter_by(email=email).first()
+    user = Employee.query.filter_by(
+        email=request.form['username'],
+        password=request.form['password']
+    ).first()
 
-    if user and user.password == password:
+    if user:
         session['user_id'] = user.emp_id
         return redirect('/dashboard')
     else:
         return "Invalid Login"
 
+    
 
 # =========================
 # Logout
