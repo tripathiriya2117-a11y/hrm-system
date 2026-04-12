@@ -32,7 +32,13 @@ def login_user():
     else:
         return "Invalid Login"
 
+# =========================
+# froget password
+# =========================
     
+@auth_bp.route('/forget_password')
+def forget_password_page():
+    return render_template('forget_password.html')    
 
 # =========================
 # Logout
