@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Apply Leave</h2>
+
+<form action="/leave/save" method="POST">
+
+<select name="leave_type" class="form-control mb-2">
+<option value="PL">PL</option>
+<option value="CL">CL</option>
+<option value="SL">SL</option>
+</select>
+
+<textarea name="reason" class="form-control mb-2" placeholder="Reason"></textarea>
+
+<input type="date" name="from_date" class="form-control mb-2">
+<input type="date" name="to_date" class="form-control mb-2">
+
+<button class="btn btn-primary">Apply</button>
+
+</form>
+
+{% endblock %}

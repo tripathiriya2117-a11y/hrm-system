@@ -82,3 +82,18 @@ class TaskAssignment(db.Model):
     status = db.Column(db.String(20), default='Pending')
     completed_at = db.Column(db.DateTime)
 
+class Leave(db.Model):
+
+    leave_id = db.Column(db.Integer, primary_key=True)
+
+    employee_id = db.Column(db.Integer, db.ForeignKey('employee.emp_id'))
+
+    leave_type = db.Column(db.String(10))
+    reason = db.Column(db.String(200))
+
+    from_date = db.Column(db.Date)
+    to_date = db.Column(db.Date)
+
+    status = db.Column(db.String(20), default='Pending')
+
+    created_at = db.Column(db.DateTime)
